@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Cows & Bulls</title>
+	<meta name="description"
+		content="Bulls and Cows is a popular mastermind game where you need to find the secret number in minimum guess. The game will help you build logical mindset and sharpen your memory.">
+	<meta name="author" content="abonzer">
+	<meta name="theme-color" content="#ed2744">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:image" content="icons/icon-512.png">
+	<link rel="shortcut icon" href="icons/favicon.ico">
+	<link rel="stylesheet" href="css/style.css">	   
+    <link href="css/gfont-open-sans.css" rel="stylesheet">
+	<link rel="manifest" href="app.webmanifest">
+	<script src="js/app.js" defer></script>
+</head>
+
+<body class="noSelect">
+
+	<main class="noSelect">
+		<nav class="noSelect">
+			<div class='menu-btn' onclick="SideNavR.classList.add('expandSideMenu')">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="vertical-align:middle;"
+					viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2" stroke-linecap="round"
+					stroke-linejoin="round">
+					<line x1="3" y1="12" x2="21" y2="12"></line>
+					<line x1="3" y1="6" x2="21" y2="6"></line>
+					<line x1="3" y1="18" x2="21" y2="18"></line>
+				</svg>
+			</div>
+			<span class='title'>
+				COBU
+			</span>
+		</nav>
+
+		<div class="main-content">
+			<div style="    margin: 20px auto; max-width: 728px; padding: 0 6px;">
+				<div class='cb cows'>
+					<div id='cwcon' class='count'>0</div>
+					<div class='lab'>Cows</div>
+				</div>
+				<div class='cb bulls'>
+					<div id='blcon' class='count'>0</div>
+					<div class='lab'>Bulls</div>
+
+				</div>
+			</div>
+			<div id='usrguess' class='usrguess'>
+				____
+			</div>
+			<div id='inputuser' class='usrguess'>
+				____
+			</div>
+			<div id='viewHist' class='showHistory' onclick="showHistory('Show')">
+				Show History
+			</div>
+			<div id="hideHist" class='showHistory' onclick="showHistory('hide')" style="display: none;">
+				Hide History
+			</div>
+			<div id="playAgain" class='showHistory' onclick="playAgainGame()"
+				style="display: none; color: #fa5c43; font-weight: 600;">
+				Play Again
+			</div>
+		</div>
+
+		<div class='numpadarea' id="bottomArea">
+			<div class='numsbtn' data-key='1' onclick="handelKeyInput(this, 1)">
+				<span>1</span>
+			</div>
+			<div class='numsbtn' data-key='2' onclick="handelKeyInput(this, 2)">
+				<span>2</span>
+			</div>
+			<div class='numsbtn' data-key='3' onclick="handelKeyInput(this, 3)">
+				<span>3</span>
+			</div>
+			<div class='numsbtn boder-r-no' data-key='4' onclick="handelKeyInput(this, 4)">
+				<span>4</span>
+			</div>
+			<div class='numsbtn' data-key='5' onclick="handelKeyInput(this, 5)">
+				<span>5</span>
+			</div>
+			<div class='numsbtn' data-key='6' onclick="handelKeyInput(this, 6)">
+				<span>6</span>
+			</div>
+			<div class='numsbtn' data-key='7' onclick="handelKeyInput(this, 7)">
+				<span>7</span>
+			</div>
+			<div class='numsbtn boder-r-no' data-key='8' onclick="handelKeyInput(this, 8)">
+				<span>8</span>
+			</div>
+			<div class='numsbtn' data-key='clear' onclick="handelClearKey()">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+						<line x1="18" y1="9" x2="12" y2="15"></line>
+						<line x1="12" y1="9" x2="18" y2="15"></line>
+					</svg></span>
+			</div>
+			<div class='numsbtn' data-key='9' onclick="handelKeyInput(this, 9)">
+				<span>9</span>
+			</div>
+			<div class='numsbtn' data-key='0' onclick="handelKeyInput(this, 0)">
+				<span>0</span>
+			</div>
+			<div class='numsbtn boder-r-no' data-key='enter' onclick="handelEnterKey()">
+				<span id="submitNum">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+					</svg>
+				</span>
+			</div>
+		</div>
+
+		<div id='gameHistory' style="display: none;">
+			<div class="history-list">
+				<!-- 
+				// game History list / rows html template	
+				// --------------------------------------
+				<div class="row-history">
+                	<div class="cols col1">1.</div>
+                	<div class="cols col2">5896</div>
+                	<div class="cols col3">
+                    	<div class="cow"> 0 Cows</div>
+                    	<div class="bull"> 0 Bulls</div>
+                	</div>
+            	</div> 
+			-->
+			</div>
+		</div>
+
+		<div id='howToPlayPg'
+			style="left: 0; width: 100%; height: 100%; position: fixed; top: 0; z-index: 9; background: #fff; padding-top: 80px; display: none;">
+			<div class='title' style="font-size: 24px;background: #f1f1f1; padding: 10px 16px;">
+				<span>How to play</span>
+				<span style="float: right; padding: 4px 20px; cursor: pointer;"
+					onclick="howToPlayPg.style.display = 'none'"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+						height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg></span>
+			</div>
+			<div class="body"
+				style="overflow-y: auto; color: #424242; max-height: calc(100% - 140px);padding: 8px 28px;line-height: 1.8;">
+				<br />
+				<p>
+					Try to guess the 4 digit number. On every guess, you will get two hints bull and cow:
+				</p>
+				<p>
+					Bull: the number of digits in your guess, which are also present at the same place in the actual 4
+					digit
+					number.
+				</p>
+				<p>
+					Cow : the number of digits in your guess, which are present in the actual 4 digit number but not at
+					the
+					same place.
+				</p>
+				<br />
+				<p>
+					<b>Game Example:</b>
+					<br /><br />
+					Suppose the actual 4-digit number is: <b>4865</b><br />
+					And your guess is : <b>4628</b><br /><br />
+					Hints for the guess would be <b>1 bull and 2 cows</b>.<br />
+					Bull -  correct digit in the correct position. (4).<br />
+					Cow - correct digit in the wrong position (6 and 8).
+				</p>
+
+				<p>Note : All digits in the number are different. <br></p>
+			</div>
+
+		</div>
+
+
+
+		<div class="sideNavR" id="SideNavR">
+			<div class="sideMenuR">
+				<div class="sideMenuR-head">
+					<div class="container">
+						<span class="sideNav-Title">Cows & Bulls</span>
+						<span class="sideNav-head-close" onclick="SideNavR.classList.remove('expandSideMenu')">
+							<svg fill="currentColor" height="1em" stroke="currentColor" stroke-width="0"
+								viewBox="0 0 352 512" width="1em" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+								</path>
+							</svg>
+						</span>
+					</div>
+				</div>
+				<div class="sideMenuR-body" style=" padding: 40px; max-width: 300px; margin: auto;">
+					<div class="section-Links">
+						<a class="sideNav-List-item" onclick="navlist.newgame()">New game</a>
+						<a class="sideNav-List-item" onclick="navlist.giveup()">Give up</a>
+						<a class="sideNav-List-item" onclick="navlist.howtoplay()">How to play</a>
+						<a class="sideNav-List-item install-pwa-button" style="border: none;">Install</a>
+					</div>
+					<div class="section-Social">
+						<h5 class="sideNav-sec-title">Connect</h5>
+						<p class="sideNav-sec-SocialIcon" style="margin: 0 0 58px;">
+							<a href="https://www.youtube.com/channel/UCapQ8VzljfmUW5OM-ynsyCQ"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" style="max-height: 29px; max-width: 31px;"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg></a>
+							<a href="https://www.instagram.com/camerapx/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+							<a href="https://www.facebook.com/ComputerLatestTricks/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" fill="currentColor" style="height: 22.5px;"><path d="M76.7 512V283H0v-91h76.7v-71.7C76.7 42.4 124.3 0 193.8 0c33.3 0 61.9 2.5 70.2 3.6V85h-48.2c-37.8 0-45.1 18-45.1 44.3V192H256l-11.7 91h-73.6v229"/></svg></a>
+							<a href="https://unexpectedweb.blogspot.com/">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" fill="currentColor" style="height: 24px;"><path d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm82.29 357.6c-3.9 3.88-7.99 7.95-11.31 11.28-2.99 3-5.1 6.7-6.17 10.71-1.51 5.66-2.73 11.38-4.77 16.87l-17.39 46.85c-13.76 3-28 4.69-42.65 4.69v-27.38c1.69-12.62-7.64-36.26-22.63-51.25-6-6-9.37-14.14-9.37-22.63v-32.01c0-11.64-6.27-22.34-16.46-27.97-14.37-7.95-34.81-19.06-48.81-26.11-11.48-5.78-22.1-13.14-31.65-21.75l-.8-.72a114.792 114.792 0 0 1-18.06-20.74c-9.38-13.77-24.66-36.42-34.59-51.14 20.47-45.5 57.36-82.04 103.2-101.89l24.01 12.01C203.48 89.74 216 82.01 216 70.11v-11.3c7.99-1.29 16.12-2.11 24.39-2.42l28.3 28.3c6.25 6.25 6.25 16.38 0 22.63L264 112l-10.34 10.34c-3.12 3.12-3.12 8.19 0 11.31l4.69 4.69c3.12 3.12 3.12 8.19 0 11.31l-8 8a8.008 8.008 0 0 1-5.66 2.34h-8.99c-2.08 0-4.08.81-5.58 2.27l-9.92 9.65a8.008 8.008 0 0 0-1.58 9.31l15.59 31.19c2.66 5.32-1.21 11.58-7.15 11.58h-5.64c-1.93 0-3.79-.7-5.24-1.96l-9.28-8.06a16.017 16.017 0 0 0-15.55-3.1l-31.17 10.39a11.95 11.95 0 0 0-8.17 11.34c0 4.53 2.56 8.66 6.61 10.69l11.08 5.54c9.41 4.71 19.79 7.16 30.31 7.16s22.59 27.29 32 32h66.75c8.49 0 16.62 3.37 22.63 9.37l13.69 13.69a30.503 30.503 0 0 1 8.93 21.57 46.536 46.536 0 0 1-13.72 32.98zM417 274.25c-5.79-1.45-10.84-5-14.15-9.97l-17.98-26.97a23.97 23.97 0 0 1 0-26.62l19.59-29.38c2.32-3.47 5.5-6.29 9.24-8.15l12.98-6.49C440.2 193.59 448 223.87 448 256c0 8.67-.74 17.16-1.82 25.54L417 274.25z"/></svg>
+                            </a>
+						</p>
+					</div>
+					<div class="section-About" style=" margin-top: -24px;">
+						<p class="sideNav-sec-about" style=" line-height: 1.4; color: #3f3f3f;font-size: 16px;">
+                            Bulls and Cows is a popular mastermind game where you need to find the secret number in minimum guess. The game will help you build logical mindset and sharpen your memory.
+                        </p>						
+					</div>
+				</div>
+			</div>
+			<div class="SideNavOverlay" onclick="SideNavR.classList.remove('expandSideMenu')"></div>
+		</div>
+	</main>
+
+</body>
+
+</html>
